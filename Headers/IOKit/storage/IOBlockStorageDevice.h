@@ -2,14 +2,14 @@
  * Copyright (c) 1998-2015 Apple Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 
@@ -150,12 +150,12 @@ struct IOBlockStorageProvisionDeviceExtent
  * long as it inherits from IOService. Because Transport Drivers needn't
  * derive from a type known to IOBlockStorageDriver, it isn't possible for
  * IOBlockStorageDriver to include the appropriate header file to allow direct
- * communication with the Transport Driver. Thus we achieve polymorphism by 
+ * communication with the Transport Driver. Thus we achieve polymorphism by
  * having the Transport Driver instantiate a subclass of IOBlockStorageDevice.
  * A typical implementation for a concrete subclass of IOBlockStorageDevice
  * simply relays all methods to its provider (the Transport Driver), which
  * implements the protocol- and device-specific behavior.
- * 
+ *
  * All pure-virtual functions must be implemented by the Transport Driver, which
  * is responsible for instantiating the Nub.
  */
@@ -163,7 +163,7 @@ struct IOBlockStorageProvisionDeviceExtent
 class IOBlockStorageDevice : public IOService {
 
     OSDeclareAbstractStructors(IOBlockStorageDevice)
-    
+
 protected:
 
     struct ExpansionData { /* */ };
@@ -182,9 +182,9 @@ public:
      * property, used by IOBlockStorageDriver for matching. Since the concrete
      * subclass of IOBlockStorageDevice can be of any class type, the property
      * is used for matching.
-     * 
+     *
      * This function is usually not overridden by developers.
-     */    
+     */
     virtual bool	init(OSDictionary * properties) APPLE_KEXT_OVERRIDE;
 
     virtual OSObject *	getProperty(const OSSymbol * key) const APPLE_KEXT_OVERRIDE;
@@ -241,7 +241,7 @@ public:
      * A pointer to a static character string.
      */
     virtual char *	getVendorString(void)	= 0;
-    
+
     /*!
      * @function getProductString
      * @abstract
@@ -250,7 +250,7 @@ public:
      * A pointer to a static character string.
      */
     virtual char *	getProductString(void)	= 0;
-    
+
     /*!
      * @function getRevisionString
      * @abstract
@@ -259,7 +259,7 @@ public:
      * A pointer to a static character string.
      */
     virtual char *	getRevisionString(void)	= 0;
-    
+
     /*!
      * @function getAdditionalDeviceInfoString
      * @abstract
@@ -275,7 +275,7 @@ public:
      * Report the block size for the device, in bytes.
      * @param blockSize
      * Pointer to returned block size value.
-     */    
+     */
     virtual IOReturn	reportBlockSize(UInt64 *blockSize)	= 0;
 
     /*!
@@ -300,7 +300,7 @@ public:
      * Report the highest valid block for the device.
      * @param maxBlock
      * Pointer to returned result
-     */    
+     */
     virtual IOReturn	reportMaxValidBlock(UInt64 *maxBlock)	= 0;
 
     /*!
@@ -310,7 +310,7 @@ public:
      * @discussion
      * This method reports whether we have media in the drive or not, and
      * whether the state has changed from the previously reported state.
-     * 
+     *
      * A result of kIOReturnSuccess is always returned if the test for media is successful,
      * regardless of media presence. The mediaPresent result should be used to determine
      * whether media is present or not. A return other than kIOReturnSuccess indicates that
@@ -320,12 +320,12 @@ public:
      * in the device; False indicates no media is present.
      */
     virtual IOReturn	reportMediaState(bool *mediaPresent,bool *changedState = 0)	= 0;
-    
+
 #if TARGET_OS_OSX && defined(__x86_64__)
     virtual IOReturn	reportPollRequirements(bool *pollRequired,
                                             bool *pollIsExpensive) __attribute__ ((deprecated));
 #endif /* TARGET_OS_OSX && defined(__x86_64__) */
-    
+
     /*!
      * @function reportRemovability
      * @abstract
@@ -338,7 +338,7 @@ public:
      * indicates the media is not removable.
      */
     virtual IOReturn	reportRemovability(bool *isRemovable)  	= 0;
-    
+
     /*!
      * @function reportWriteProtection
      * @abstract
@@ -413,6 +413,7 @@ public:
     virtual IOReturn doDiscard(UInt64 block, UInt64 nblks) __attribute__ ((deprecated));
 #endif /* TARGET_OS_OSX && defined(__x86_64__) */
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_7
     /*!
      * @function doUnmap
      * @abstract
@@ -427,7 +428,8 @@ public:
      */
     virtual IOReturn doUnmap(IOBlockStorageDeviceExtent * extents,
                              UInt32                       extentsCount,
-                             IOStorageUnmapOptions        options = 0); /* 10.6.6 */
+                             IOStorageUnmapOptions        options = 0); /* 10.7.0 */
+#endif
 
 #if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_10
     /*!
@@ -494,8 +496,12 @@ public:
                                           IOStorageGetProvisionStatusOptions    options = 0); /* 10.12.0 */
 #endif
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_7
     OSMetaClassDeclareReservedUsed(IOBlockStorageDevice,    0);
-  
+#else
+    OSMetaClassDeclareReservedUnused(IOBlockStorageDevice,  0);
+#endif
+
 #if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_10
     OSMetaClassDeclareReservedUsed(IOBlockStorageDevice,    1);
 #else
