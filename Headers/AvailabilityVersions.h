@@ -2,14 +2,14 @@
  * Copyright (c) 2019 by Apple Inc.. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,23 +17,23 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
- 
+
 #ifndef __AVAILABILITY_VERSIONS__
 #define __AVAILABILITY_VERSIONS__
 
-#define __MAC_10_0                                        1000
-#define __MAC_10_1                                        1010
-#define __MAC_10_2                                        1020
-#define __MAC_10_3                                        1030
-#define __MAC_10_4                                        1040
-#define __MAC_10_5                                        1050
-#define __MAC_10_6                                        1060
-#define __MAC_10_7                                        1070
-#define __MAC_10_8                                        1080
-#define __MAC_10_9                                        1090
+#define __MAC_10_0                                      100000
+#define __MAC_10_1                                      100100
+#define __MAC_10_2                                      100200
+#define __MAC_10_3                                      100300
+#define __MAC_10_4                                      100400
+#define __MAC_10_5                                      100500
+#define __MAC_10_6                                      100600
+#define __MAC_10_7                                      100700
+#define __MAC_10_8                                      100800
+#define __MAC_10_9                                      100900
 #define __MAC_10_10                                     101000
 #define __MAC_10_10_2                                   101002
 #define __MAC_10_10_3                                   101003
@@ -337,4 +337,3 @@
 #endif /* #if (!defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || defined(_DARWIN_C_SOURCE) */
 
 #endif /* __AVAILABILITY_VERSIONS__ */
-
